@@ -1,0 +1,11 @@
+Changes
+MANIFEST
+Makefile.PL
+README
+lib/MojoX/Encode/Gzip.pm
+t/00-load.t
+t/pod-coverage.t
+t/pod.t
+t/public/gzippable.txt
+t/encode-gzip.t
+META.yml                                 Module meta-data (added by MakeMaker)
