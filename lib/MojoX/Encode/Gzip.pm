@@ -3,45 +3,35 @@ use strict;
 use warnings;
 use base 'Mojo::Base';
 
-our $VERSION = '1.00';
+our $VERSION = '1.10';
 
 use Compress::Zlib ();
 
-__PACKAGE__->attr(
-    min_bytes => (
-        chained => 1,
-        default => 500,
-    )
-);
-__PACKAGE__->attr(
-    max_bytes => (
-        chained => 1,
-        default => 500000,
-    )
-);
+__PACKAGE__->attr( min_bytes => 500 );
+__PACKAGE__->attr( max_bytes => 500000 );
 
 sub maybe_gzip {
     my $self = shift;
-    my $tx = shift; 
+    my $tx = shift;
     my $req = $tx->req;
     my $res = $tx->res;
 
     my $accept = $req->headers->header('Accept-Encoding') || '';
     my $body   = $res->body;
-    my $length = $res->body_length || 0;
+    my $length = $res->body_size || 0;
 
-    # Don't both unless: 
+    # Don't both unless:
     # - we have a success code
     # - we have a content type that makes sense to gzip
     # - a client is asking for giving
-    # - the content is not already encoded. 
-    # - The body is not too small or too large to gzip 
-    # XXX content-types should be configurable. 
+    # - the content is not already encoded.
+    # - The body is not too small or too large to gzip
+    # XXX content-types should be configurable.
     unless ( ( index( $accept, 'gzip' ) >= 0 )
             and ( $length > $self->min_bytes )
             and ( $length < $self->max_bytes  )
-            and ( $res->code == 200 ) 
-            and ( not $res->headers->header('Content-Encoding')) 
+            and ( $res->code == 200 )
+            and ( not $res->headers->header('Content-Encoding'))
             and ( $res->headers->content_type =~ qr{^text|xml$|javascript$|^application/json$} )
     ) {
         return undef;
@@ -53,7 +43,7 @@ sub maybe_gzip {
     $res->body( Compress::Zlib::memGzip( $body ) );
     $res->headers->content_length( $length );
     $res->headers->header('Content-Encoding' => 'gzip');
-    $res->headers->add_line( 'Vary', 'Accept-Encoding' );
+    $res->headers->add( 'Vary' => 'Accept-Encoding' );
 
     return 1;
 }
@@ -71,32 +61,32 @@ MojoX::Encode::Gzip - Gzip a Mojo::Message::Response
     use MojoX:Encode::Gzip;
 
     # Simple
-    MojoX::Encode::Gzip->new->maybe_gzip($tx); 
+    MojoX::Encode::Gzip->new->maybe_gzip($tx);
 
     # With options
     my $gzip = MojoX::Encode::Gzip->new(
         min_bytes => 600,
         max_bytes => 600000,
     );
-    $success = $gzip->maybe_gzip($tx); 
+    $success = $gzip->maybe_gzip($tx);
 
 
 =head1 DESCRIPTION
 
 Gzip compress a Mojo::Message::Response if client supports it.
 
-=head2 ATTRIBUTES 
+=head2 ATTRIBUTES
 
 =head2 C<min_bytes>
 
 The minumum number of bytes in the body before we would try to gzip it. Trying to gzip really
 small messages can take extra CPU power on the server and client without saving any times. Defaults
-to 500. 
+to 500.
 
-=head2 C<max_bytes> 
+=head2 C<max_bytes>
 
 The maximum number of bytes in the body before we give up on trying gzip it. Gzipping very large messages
-can delay the response and possibly exhaust system resources. Defaults to 500000. 
+can delay the response and possibly exhaust system resources. Defaults to 500000.
 
 =head1 METHODS
 
@@ -106,10 +96,10 @@ can delay the response and possibly exhaust system resources. Defaults to 500000
 
 Given a L<Mojo::Transaction> object, possibly gzips transforms the response by
 gzipping it. Returns true if we gzip it, and undef otherwise.  The behavior is
-modified by the C<< min_bytes >> and C<< max_bytes >> attributes. 
+modified by the C<< min_bytes >> and C<< max_bytes >> attributes.
 
 Currently we only only try to gzip Content-types that start with "text/", or end in "xml" or "javascript",
-along with "application/json". This may be configurable in the future.  
+along with "application/json". This may be configurable in the future.
 
 =head1 AUTHOR
 

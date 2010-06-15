@@ -1,5 +1,8 @@
 Revision history for MojoX-Encode-Gzip
 
+1.10 Mon Jun 14 21:41:58 EDT 2010
+    - Update API to match current Mojo version.
+
 1.00 Tue Nov 25 22:22:57 EST 2008
         First version, released on an unsuspecting world.
 

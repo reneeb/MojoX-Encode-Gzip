@@ -11,7 +11,7 @@ WriteMakefile(
     PREREQ_PM => {
         'Test::More'     => 0,
         'Compress::Zlib' => 0,
-        'Mojo'           => '0.8.7'
+        'Mojo'           => '0.999925',
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'MojoX-Encode-Gzip-*' },
