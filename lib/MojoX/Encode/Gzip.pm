@@ -101,47 +101,15 @@ modified by the C<< min_bytes >> and C<< max_bytes >> attributes.
 Currently we only only try to gzip Content-types that start with "text/", or end in "xml" or "javascript",
 along with "application/json". This may be configurable in the future.
 
-=head1 AUTHOR
-
-Mark Stosberg, C<< <mark at summersault.com> >>
-
-=head1 BUGS
-
-Please report any bugs or feature requests to C<bug-mojox-encode-gzip at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=MojoX-Encode-Gzip>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
-
-
-
-
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
 
     perldoc MojoX::Encode::Gzip
 
+=head1 CODE REPOSITORY AND BUGTRACKER
 
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=MojoX-Encode-Gzip>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/MojoX-Encode-Gzip>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/MojoX-Encode-Gzip>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/MojoX-Encode-Gzip>
-
-=back
+The code repository and a bugtracker are available at L<http://github.com/reneeb/MojoX-Encode-Gzip>.
 
 =head1 ACKNOWLEDGEMENTS
 
