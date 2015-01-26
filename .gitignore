@@ -1,0 +1,3 @@
+*.swp
+.build*
+MojoX-Encode-Gzip*
