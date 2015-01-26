@@ -115,12 +115,13 @@ The code repository and a bugtracker are available at L<http://github.com/reneeb
 
  Inspired by Catalyst::Plugin::Compress::Gzip
 
-=head1 COPYRIGHT & LICENSE
+=head1 PREVIOUS MAINTAINERS
 
-Copyright 2008 Mark Stosberg, all rights reserved.
+=over 4
 
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
+=item * 2008-2015 Mark Stosberg
+
+=back
 
 =cut
 
