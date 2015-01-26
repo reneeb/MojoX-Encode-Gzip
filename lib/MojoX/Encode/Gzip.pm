@@ -1,6 +1,10 @@
 package MojoX::Encode::Gzip;
+
+# ABSTRACT: Gzip a Mojo::Message::Response
+
 use strict;
 use warnings;
+
 use base 'Mojo::Base';
 
 our $VERSION = '1.10';
@@ -37,8 +41,8 @@ sub maybe_gzip {
         return undef;
     }
 
-   eval { local $/; $body = <$body> } if ref $body;
-   die "Response body is an unsupported kind of reference" if ref $body;
+    eval { local $/; $body = <$body> } if ref $body;
+    die "Response body is an unsupported kind of reference" if ref $body;
 
     $res->body( Compress::Zlib::memGzip( $body ) );
     $res->headers->content_length( $length );
@@ -51,10 +55,6 @@ sub maybe_gzip {
 1;
 
 __END__
-
-=head1 NAME
-
-MojoX::Encode::Gzip - Gzip a Mojo::Message::Response
 
 =head1 SYNOPSIS
 
