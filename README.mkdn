@@ -1,0 +1,130 @@
+[![Build Status](https://travis-ci.org/reneeb/MojoX-Encode-Gzip.svg?branch=master)](https://travis-ci.org/reneeb/MojoX-Encode-Gzip)
+[![Kwalitee status](http://cpants.cpanauthors.org/dist/MojoX-Encode-Gzip.png)](http://cpants.charsbar.org/dist/overview/MojoX-Encode-Gzip)
+[![GitHub issues](https://img.shields.io/github/issues/reneeb/MojoX-Encode-Gzip.svg)](https://github.com/reneeb/MojoX-Encode-Gzip/issues)
+
+# NAME
+
+MojoX::Encode::Gzip - Gzip a Mojo::Message::Response
+
+# VERSION
+
+version 1.11
+
+# SYNOPSIS
+
+    use MojoX:Encode::Gzip;
+
+    # Simple
+    MojoX::Encode::Gzip->new->maybe_gzip($tx);
+
+    # With options
+    my $gzip = MojoX::Encode::Gzip->new(
+        min_bytes => 600,
+        max_bytes => 600000,
+    );
+    $success = $gzip->maybe_gzip($tx);
+
+# DESCRIPTION
+
+Gzip compress a Mojo::Message::Response if client supports it.
+
+## ATTRIBUTES
+
+## `min_bytes`
+
+The minumum number of bytes in the body before we would try to gzip it. Trying to gzip really
+small messages can take extra CPU power on the server and client without saving any times. Defaults
+to 500.
+
+## `max_bytes`
+
+The maximum number of bytes in the body before we give up on trying gzip it. Gzipping very large messages
+can delay the response and possibly exhaust system resources. Defaults to 500000.
+
+# METHODS
+
+## `maybe_gzip`
+
+    my $success = $gzip->maybe_gzip($tx);
+
+Given a [Mojo::Transaction](https://metacpan.org/pod/Mojo::Transaction) object, possibly gzips transforms the response by
+gzipping it. Returns true if we gzip it, and undef otherwise.  The behavior is
+modified by the `min_bytes` and `max_bytes` attributes.
+
+Currently we only only try to gzip Content-types that start with "text/", or end in "xml" or "javascript",
+along with "application/json". This may be configurable in the future.
+
+# SUPPORT
+
+You can find documentation for this module with the perldoc command.
+
+    perldoc MojoX::Encode::Gzip
+
+# CODE REPOSITORY AND BUGTRACKER
+
+The code repository and a bugtracker are available at [http://github.com/reneeb/MojoX-Encode-Gzip](http://github.com/reneeb/MojoX-Encode-Gzip).
+
+# ACKNOWLEDGEMENTS
+
+    Inspired by Catalyst::Plugin::Compress::Gzip
+
+# PREVIOUS MAINTAINERS
+
+- 2008-2015 Mark Stosberg
+
+
+
+## Development
+
+The distribution is contained in a Git repository, so simply clone the
+repository
+
+```
+$ git clone http://github.com/reneeb/MojoX-Encode-Gzip.git
+```
+
+and change into the newly-created directory.
+
+```
+$ cd MojoX-Encode-Gzip
+```
+
+The project uses [`Dist::Zilla`](https://metacpan.org/pod/Dist::Zilla) to
+build the distribution, hence this will need to be installed before
+continuing:
+
+```
+$ cpanm Dist::Zilla
+```
+
+To install the required prequisite packages, run the following set of
+commands:
+
+```
+$ dzil authordeps --missing | cpanm
+$ dzil listdeps --author --missing | cpanm
+```
+
+The distribution can be tested like so:
+
+```
+$ dzil test
+```
+
+To run the full set of tests (including author and release-process tests),
+add the `--author` and `--release` options:
+
+```
+$ dzil test --author --release
+```
+
+# AUTHOR
+
+Renee Baecker &lt;reneeb@cpan.org>
+
+# COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2018 by Renee Baecker.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
