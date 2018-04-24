@@ -7,7 +7,10 @@ use warnings;
 
 use base 'Mojo::Base';
 
-our $VERSION = '1.11';
+use Data::Dumper;
+use Mojo::Content::Single;
+
+our $VERSION = '1.12';
 
 use Compress::Zlib ();
 
@@ -15,8 +18,10 @@ __PACKAGE__->attr( min_bytes => 500 );
 __PACKAGE__->attr( max_bytes => 500000 );
 
 sub maybe_gzip {
-    my $self = shift;
-    my $tx = shift;
+    my $self  = shift;
+    my $tx    = shift;
+    #my $debug = shift;
+
     my $req = $tx->req;
     my $res = $tx->res;
 
@@ -44,9 +49,13 @@ sub maybe_gzip {
     eval { local $/; $body = <$body> } if ref $body;
     die "Response body is an unsupported kind of reference" if ref $body;
 
-    $res->body( Compress::Zlib::memGzip( $body ) );
-    $res->headers->content_length( $length );
-    $res->headers->header('Content-Encoding' => 'gzip');
+    my $zipped = Compress::Zlib::memGzip( $body );
+
+    $res->content( Mojo::Content::Single->new );
+    $res->body( $zipped );
+    $res->fix_headers;
+    $res->headers->header( 'Content-Length' => length $zipped );
+    $res->headers->header( 'Content-Encoding' => 'gzip' );
     $res->headers->add( 'Vary' => 'Accept-Encoding' );
 
     return 1;

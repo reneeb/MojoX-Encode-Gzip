@@ -8,7 +8,7 @@ MojoX::Encode::Gzip - Gzip a Mojo::Message::Response
 
 # VERSION
 
-version 1.11
+version 1.12
 
 # SYNOPSIS
 
